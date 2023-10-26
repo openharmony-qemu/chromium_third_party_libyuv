@@ -79,7 +79,7 @@ used to filter file path.
                 <filteritem type="filepath" name="unit_test/testdata/test1.jpg" desc="chromium原生二进制文件,不会使用" />
             </filefilter>
             <filefilter name="defaultFilter" desc="File is not used">
-                <filteritem type="filepath" name="Android.bp" desc="经确认不适用该类文件" />
+                <filteritem type="filepath" name="Android.bp" desc="经确认不使用该类文件" />
             </filefilter>
         </filefilterlist> 
         <licensematcherlist>
