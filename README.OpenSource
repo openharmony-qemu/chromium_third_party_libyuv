@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "libyuv",
+        "License": "BSD-3-Clause",
+        "License File":"LICENSE",
+        "Version Number": "78625492cb0ff43faebbb6cb6db2209cd4ccb785",
+        "Owner": "huangjiewen2@huawei.com",
+        "Upstream URL": "https://chromium.googlesource.com/libyuv/libyuv.git@78625492cb0ff43faebbb6cb6db2209cd4ccb785",
+        "Description": "视频格式转换库"
+    }
+]
