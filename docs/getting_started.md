@@ -59,13 +59,13 @@ To get just the source (not buildable):
 
 ### Windows
 
-    call gn gen out\Release "--args=is_debug=false target_cpu=\"x64\""
-    call gn gen out\Debug "--args=is_debug=true target_cpu=\"x64\""
+    gn gen out\Release "--args=is_debug=false target_cpu=\"x64\""
+    gn gen out\Debug "--args=is_debug=true target_cpu=\"x64\""
     ninja -v -C out\Release
     ninja -v -C out\Debug
 
-    call gn gen out\Release "--args=is_debug=false target_cpu=\"x86\""
-    call gn gen out\Debug "--args=is_debug=true target_cpu=\"x86\""
+    gn gen out\Release "--args=is_debug=false target_cpu=\"x86\""
+    gn gen out\Debug "--args=is_debug=true target_cpu=\"x86\""
     ninja -v -C out\Release
     ninja -v -C out\Debug
 
@@ -139,11 +139,11 @@ mips
 
 arm disassembly:
 
-    third_party/android_ndk/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-objdump -d ./out/Release/obj/libyuv/row_common.o >row_common.txt
+    llvm-objdump -d ./out/Release/obj/libyuv/row_common.o >row_common.txt
 
-    third_party/android_ndk/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-objdump -d ./out/Release/obj/libyuv_neon/row_neon.o >row_neon.txt
+    llvm-objdump -d ./out/Release/obj/libyuv_neon/row_neon.o >row_neon.txt
 
-    third_party/android_ndk/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-objdump -d ./out/Release/obj/libyuv_neon/row_neon64.o >row_neon64.txt
+    llvm-objdump -d ./out/Release/obj/libyuv_neon/row_neon64.o >row_neon64.txt
 
     Caveat: Disassembly may require optimize_max be disabled in BUILD.gn
 
@@ -231,13 +231,25 @@ If you don't have prebuilt clang and riscv64 qemu, run the script to download so
 After running script, clang & qemu are built in `build-toolchain-qemu/riscv-clang/` & `build-toolchain-qemu/riscv-qemu/`.
 
 ### Cross-compile for RISC-V target
-    cmake -B out/Release/ -DTEST=ON \
+    cmake -B out/Release/ -DUNIT_TEST=ON \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_TOOLCHAIN_FILE="./riscv_script/riscv-clang.cmake" \
           -DTOOLCHAIN_PATH={TOOLCHAIN_PATH} \
           -DUSE_RVV=ON .
     cmake --build out/Release/
 
+#### Customized Compiler Flags
+
+Customized compiler flags are supported by `-DRISCV_COMPILER_FLAGS="xxx"`.
+If `-DRISCV_COMPILER_FLAGS="xxx"` is manually assigned, other compile flags(e.g disable -march=xxx) will not be appended.
+
+Example:
+
+    cmake -B out/Release/ -DUNIT_TEST=ON \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_TOOLCHAIN_FILE="./riscv_script/riscv-clang.cmake" \
+          -DRISCV_COMPILER_FLAGS="-mcpu=sifive-x280" \
+          .
 
 ### Run on QEMU
 
