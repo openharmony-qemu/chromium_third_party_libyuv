@@ -61,6 +61,7 @@ int main(int argc, const char* argv[]) {
     int has_sve = TestCpuFlag(kCpuHasSVE);
     int has_sve2 = TestCpuFlag(kCpuHasSVE2);
     int has_sme = TestCpuFlag(kCpuHasSME);
+    int has_sme2 = TestCpuFlag(kCpuHasSME2);
     printf("Has Arm 0x%x\n", has_arm);
     printf("Has Neon 0x%x\n", has_neon);
     printf("Has Neon DotProd 0x%x\n", has_neon_dotprod);
@@ -68,6 +69,7 @@ int main(int argc, const char* argv[]) {
     printf("Has SVE 0x%x\n", has_sve);
     printf("Has SVE2 0x%x\n", has_sve2);
     printf("Has SME 0x%x\n", has_sme);
+    printf("Has SME2 0x%x\n", has_sme2);
 
 #if __aarch64__
     // Read and print the SVE and SME vector lengths.
@@ -171,6 +173,7 @@ int main(int argc, const char* argv[]) {
     int has_avx = TestCpuFlag(kCpuHasAVX);
     int has_avx2 = TestCpuFlag(kCpuHasAVX2);
     int has_erms = TestCpuFlag(kCpuHasERMS);
+    int has_fsmr = TestCpuFlag(kCpuHasFSMR);
     int has_fma3 = TestCpuFlag(kCpuHasFMA3);
     int has_f16c = TestCpuFlag(kCpuHasF16C);
     int has_avx512bw = TestCpuFlag(kCpuHasAVX512BW);
@@ -180,6 +183,7 @@ int main(int argc, const char* argv[]) {
     int has_avx512vbmi2 = TestCpuFlag(kCpuHasAVX512VBMI2);
     int has_avx512vbitalg = TestCpuFlag(kCpuHasAVX512VBITALG);
     int has_avx10 = TestCpuFlag(kCpuHasAVX10);
+    int has_avx10_2 = TestCpuFlag(kCpuHasAVX10_2);
     int has_avxvnni = TestCpuFlag(kCpuHasAVXVNNI);
     int has_avxvnniint8 = TestCpuFlag(kCpuHasAVXVNNIINT8);
     int has_amxint8 = TestCpuFlag(kCpuHasAMXINT8);
@@ -191,6 +195,7 @@ int main(int argc, const char* argv[]) {
     printf("Has AVX 0x%x\n", has_avx);
     printf("Has AVX2 0x%x\n", has_avx2);
     printf("Has ERMS 0x%x\n", has_erms);
+    printf("Has FSMR 0x%x\n", has_fsmr);
     printf("Has FMA3 0x%x\n", has_fma3);
     printf("Has F16C 0x%x\n", has_f16c);
     printf("Has AVX512BW 0x%x\n", has_avx512bw);
@@ -200,6 +205,7 @@ int main(int argc, const char* argv[]) {
     printf("Has AVX512VBMI2 0x%x\n", has_avx512vbmi2);
     printf("Has AVX512VBITALG 0x%x\n", has_avx512vbitalg);
     printf("Has AVX10 0x%x\n", has_avx10);
+    printf("Has AVX10_2 0x%x\n", has_avx10_2);
     printf("HAS AVXVNNI 0x%x\n", has_avxvnni);
     printf("Has AVXVNNIINT8 0x%x\n", has_avxvnniint8);
     printf("Has AMXINT8 0x%x\n", has_amxint8);
