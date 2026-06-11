@@ -262,7 +262,7 @@ if (libyuv_use_sve) {
     cflags = [ "-march=armv9-a+i8mm+sve2" ]
     } else {
       configs -= [ "//arkweb/build/config/sanitizers:armv83a" ]
-      cflags = [ "-march=armv9-a+pauth-hint-only+sve2" ]
+      cflags = [ "-march=armv9-a+pauth-hint-only+sve2+i8mm" ]
     }
   }
 }
