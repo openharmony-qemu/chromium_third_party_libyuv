@@ -10,6 +10,8 @@
 
 #include "libyuv/convert_from_argb.h"
 
+#include <limits.h>
+
 #include "libyuv/basic_types.h"
 #include "libyuv/cpu_id.h"
 #include "libyuv/planar_functions.h"
@@ -1796,7 +1798,8 @@ int ARGBToRGBA(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_rgba == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_rgba == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_rgba = 0;
@@ -1837,7 +1840,8 @@ int ARGBToRGB24(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_rgb24 == width * 3) {
+  if (src_stride_argb == width * 4 && dst_stride_rgb24 == width * 3 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_rgb24 = 0;
@@ -1937,7 +1941,8 @@ int ARGBToRAW(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_raw == width * 3) {
+  if (src_stride_argb == width * 4 && dst_stride_raw == width * 3 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_raw = 0;
@@ -2123,7 +2128,8 @@ int ARGBToRGB565(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_rgb565 == width * 2) {
+  if (src_stride_argb == width * 4 && dst_stride_rgb565 == width * 2 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_rgb565 = 0;
@@ -2211,7 +2217,8 @@ int ARGBToARGB1555(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb1555 == width * 2) {
+  if (src_stride_argb == width * 4 && dst_stride_argb1555 == width * 2 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb1555 = 0;
@@ -2293,7 +2300,8 @@ int ARGBToARGB4444(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb4444 == width * 2) {
+  if (src_stride_argb == width * 4 && dst_stride_argb4444 == width * 2 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb4444 = 0;
@@ -2375,7 +2383,8 @@ int ABGRToAR30(const uint8_t* src_abgr,
     src_stride_abgr = -src_stride_abgr;
   }
   // Coalesce rows.
-  if (src_stride_abgr == width * 4 && dst_stride_ar30 == width * 4) {
+  if (src_stride_abgr == width * 4 && dst_stride_ar30 == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_abgr = dst_stride_ar30 = 0;
@@ -2432,7 +2441,8 @@ int ARGBToAR30(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_ar30 == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_ar30 == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_ar30 = 0;
@@ -3037,7 +3047,8 @@ int RGBAToJ400(const uint8_t* src_rgba,
     src_stride_rgba = -src_stride_rgba;
   }
   // Coalesce rows.
-  if (src_stride_rgba == width * 4 && dst_stride_yj == width) {
+  if (src_stride_rgba == width * 4 && dst_stride_yj == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_rgba = dst_stride_yj = 0;
@@ -3526,7 +3537,8 @@ int ARGBToAR64(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_ar64 == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_ar64 == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_ar64 = 0;
@@ -3590,7 +3602,8 @@ int ARGBToAB64(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_ab64 == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_ab64 == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_ab64 = 0;
