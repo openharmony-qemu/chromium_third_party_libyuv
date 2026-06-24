@@ -3099,7 +3099,7 @@ int J400ToARGB(const uint8_t* src_y,
     src_stride_y = -src_stride_y;
   }
   // Coalesce rows.
- if (src_stride_y == width && dst_stride_argb == width * 4 &&
+  if (src_stride_y == width && dst_stride_argb == width * 4 &&
       (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
