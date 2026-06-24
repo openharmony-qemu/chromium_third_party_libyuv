@@ -4623,7 +4623,7 @@ int ARGBShuffle(const uint8_t* src_bgra,
     src_stride_bgra = -src_stride_bgra;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+  if (src_stride_bgra == width * 4 && dst_stride_argb == width * 4 &&
       (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
@@ -5475,6 +5475,7 @@ int ARGBCopyYToAlpha(const uint8_t* src_y,
   // Coalesce rows.
   if (src_stride_y == width && dst_stride_argb == width * 4 &&
       (ptrdiff_t)width * height <= INT_MAX) {
+    width *= height;
     height = 1;
     src_stride_y = dst_stride_argb = 0;
   }
