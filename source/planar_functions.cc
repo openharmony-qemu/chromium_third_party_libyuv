@@ -2124,7 +2124,7 @@ int YUY2ToI422(const uint8_t* src_yuy2,
   // Coalesce rows.
   if (src_stride_yuy2 == width * 2 && dst_stride_y == width &&
       dst_stride_u * 2 == width && dst_stride_v * 2 == width &&
-      (ptrdiff_t)width * height <= 32768) { {
+      (ptrdiff_t)width * height <= 32768) {
     width *= height;
     height = 1;
     src_stride_yuy2 = dst_stride_y = dst_stride_u = dst_stride_v = 0;
