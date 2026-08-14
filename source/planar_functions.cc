@@ -11,6 +11,7 @@
 #include "libyuv/planar_functions.h"
 
 #include <assert.h>
+#include <limits.h>
 #include <string.h>  // for memset()
 
 #include "libyuv/cpu_id.h"
@@ -42,7 +43,8 @@ void CopyPlane(const uint8_t* src_y,
     dst_stride_y = -dst_stride_y;
   }
   // Coalesce rows.
-  if (src_stride_y == width && dst_stride_y == width) {
+  if (src_stride_y == width && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_y = dst_stride_y = 0;
@@ -120,7 +122,8 @@ void Convert16To8Plane(const uint16_t* src_y,
     dst_stride_y = -dst_stride_y;
   }
   // Coalesce rows.
-  if (src_stride_y == width && dst_stride_y == width) {
+  if (src_stride_y == width && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_y = dst_stride_y = 0;
@@ -189,7 +192,8 @@ void Convert8To16Plane(const uint8_t* src_y,
     dst_stride_y = -dst_stride_y;
   }
   // Coalesce rows.
-  if (src_stride_y == width && dst_stride_y == width) {
+  if (src_stride_y == width && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_y = dst_stride_y = 0;
@@ -510,7 +514,7 @@ void SplitUVPlane(const uint8_t* src_uv,
   }
   // Coalesce rows.
   if (src_stride_uv == width * 2 && dst_stride_u == width &&
-      dst_stride_v == width) {
+      dst_stride_v == width && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_uv = dst_stride_u = dst_stride_v = 0;
@@ -593,7 +597,7 @@ void MergeUVPlane(const uint8_t* src_u,
   }
   // Coalesce rows.
   if (src_stride_u == width && src_stride_v == width &&
-      dst_stride_uv == width * 2) {
+      dst_stride_uv == width * 2 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_u = src_stride_v = dst_stride_uv = 0;
@@ -690,7 +694,7 @@ void SplitUVPlane_16(const uint16_t* src_uv,
   }
   // Coalesce rows.
   if (src_stride_uv == width * 2 && dst_stride_u == width &&
-      dst_stride_v == width) {
+      dst_stride_v == width && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_uv = dst_stride_u = dst_stride_v = 0;
@@ -748,7 +752,7 @@ void MergeUVPlane_16(const uint16_t* src_u,
   }
   // Coalesce rows.
   if (src_stride_u == width && src_stride_v == width &&
-      dst_stride_uv == width * 2) {
+      dst_stride_uv == width * 2 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_u = src_stride_v = dst_stride_uv = 0;
@@ -802,7 +806,8 @@ void ConvertToMSBPlane_16(const uint16_t* src_y,
     dst_stride_y = -dst_stride_y;
   }
   // Coalesce rows.
-  if (src_stride_y == width && dst_stride_y == width) {
+  if (src_stride_y == width && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_y = dst_stride_y = 0;
@@ -855,7 +860,8 @@ void ConvertToLSBPlane_16(const uint16_t* src_y,
     dst_stride_y = -dst_stride_y;
   }
   // Coalesce rows.
-  if (src_stride_y == width && dst_stride_y == width) {
+  if (src_stride_y == width && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_y = dst_stride_y = 0;
@@ -906,7 +912,8 @@ void SwapUVPlane(const uint8_t* src_uv,
     src_stride_uv = -src_stride_uv;
   }
   // Coalesce rows.
-  if (src_stride_uv == width * 2 && dst_stride_vu == width * 2) {
+  if (src_stride_uv == width * 2 && dst_stride_vu == width * 2 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_uv = dst_stride_vu = 0;
@@ -1267,7 +1274,8 @@ void SplitRGBPlane(const uint8_t* src_rgb,
   }
   // Coalesce rows.
   if (src_stride_rgb == width * 3 && dst_stride_r == width &&
-      dst_stride_g == width && dst_stride_b == width) {
+      dst_stride_g == width && dst_stride_b == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_rgb = dst_stride_r = dst_stride_g = dst_stride_b = 0;
@@ -1331,7 +1339,7 @@ void MergeRGBPlane(const uint8_t* src_r,
   }
   // Coalesce rows.
   if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
-      dst_stride_rgb == width * 3) {
+      dst_stride_rgb == width * 3 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_r = src_stride_g = src_stride_b = dst_stride_rgb = 0;
@@ -1386,13 +1394,14 @@ static void SplitARGBPlaneAlpha(const uint8_t* src_argb,
                        uint8_t* dst_b, uint8_t* dst_a, int width) =
       SplitARGBRow_C;
 
-  assert(height > 0);
+  assert(height >= 0);
 
   if (width <= 0 || height == 0) {
     return;
   }
   if (src_stride_argb == width * 4 && dst_stride_r == width &&
-      dst_stride_g == width && dst_stride_b == width && dst_stride_a == width) {
+      dst_stride_g == width && dst_stride_b == width && dst_stride_a == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_r = dst_stride_g = dst_stride_b =
@@ -1461,13 +1470,14 @@ static void SplitARGBPlaneOpaque(const uint8_t* src_argb,
   int y;
   void (*SplitXRGBRow)(const uint8_t* src_rgb, uint8_t* dst_r, uint8_t* dst_g,
                        uint8_t* dst_b, int width) = SplitXRGBRow_C;
-  assert(height > 0);
+  assert(height >= 0);
 
   if (width <= 0 || height == 0) {
     return;
   }
   if (src_stride_argb == width * 4 && dst_stride_r == width &&
-      dst_stride_g == width && dst_stride_b == width) {
+      dst_stride_g == width && dst_stride_b == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_r = dst_stride_g = dst_stride_b = 0;
@@ -1574,13 +1584,14 @@ static void MergeARGBPlaneAlpha(const uint8_t* src_r,
                        const uint8_t* src_b, const uint8_t* src_a,
                        uint8_t* dst_argb, int width) = MergeARGBRow_C;
 
-  assert(height > 0);
+  assert(height >= 0);
 
   if (width <= 0 || height == 0) {
     return;
   }
   if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
-      src_stride_a == width && dst_stride_argb == width * 4) {
+      src_stride_a == width && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_r = src_stride_g = src_stride_b = src_stride_a =
@@ -1642,13 +1653,13 @@ static void MergeARGBPlaneOpaque(const uint8_t* src_r,
                        const uint8_t* src_b, uint8_t* dst_argb, int width) =
       MergeXRGBRow_C;
 
-  assert(height > 0);
+  assert(height >= 0);
 
   if (width <= 0 || height == 0) {
     return;
   }
   if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
-      dst_stride_argb == width * 4) {
+      dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_r = src_stride_g = src_stride_b = dst_stride_argb = 0;
@@ -1741,6 +1752,9 @@ void MergeXR30Plane(const uint16_t* src_r,
                        const uint16_t* src_b, uint8_t* dst_ar30, int depth,
                        int width) = MergeXR30Row_C;
 
+  if (width <= 0 || height == 0) {
+    return;
+  }
   // Negative height means invert the image.
   if (height < 0) {
     height = -height;
@@ -1749,7 +1763,7 @@ void MergeXR30Plane(const uint16_t* src_r,
   }
   // Coalesce rows.
   if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
-      dst_stride_ar30 == width * 4) {
+      dst_stride_ar30 == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_r = src_stride_g = src_stride_b = dst_stride_ar30 = 0;
@@ -1807,8 +1821,14 @@ static void MergeAR64PlaneAlpha(const uint16_t* src_r,
                        uint16_t* dst_argb, int depth, int width) =
       MergeAR64Row_C;
 
+  assert(height >= 0);
+
+  if (width <= 0 || height == 0) {
+    return;
+  }
   if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
-      src_stride_a == width && dst_stride_ar64 == width * 4) {
+      src_stride_a == width && dst_stride_ar64 == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_r = src_stride_g = src_stride_b = src_stride_a =
@@ -1858,9 +1878,14 @@ static void MergeAR64PlaneOpaque(const uint16_t* src_r,
                        const uint16_t* src_b, uint16_t* dst_argb, int depth,
                        int width) = MergeXR64Row_C;
 
+  assert(height >= 0);
+
+  if (width <= 0 || height == 0) {
+    return;
+  }
   // Coalesce rows.
   if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
-      dst_stride_ar64 == width * 4) {
+      dst_stride_ar64 == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_r = src_stride_g = src_stride_b = dst_stride_ar64 = 0;
@@ -1943,8 +1968,14 @@ static void MergeARGB16To8PlaneAlpha(const uint16_t* src_r,
                             uint8_t* dst_argb, int depth, int width) =
       MergeARGB16To8Row_C;
 
+  assert(height >= 0);
+
+  if (width <= 0 || height == 0) {
+    return;
+  }
   if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
-      src_stride_a == width && dst_stride_argb == width * 4) {
+      src_stride_a == width && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_r = src_stride_g = src_stride_b = src_stride_a =
@@ -1994,9 +2025,14 @@ static void MergeARGB16To8PlaneOpaque(const uint16_t* src_r,
                             const uint16_t* src_b, uint8_t* dst_argb, int depth,
                             int width) = MergeXRGB16To8Row_C;
 
+  assert(height >= 0);
+
+  if (width <= 0 || height == 0) {
+    return;
+  }
   // Coalesce rows.
   if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
-      dst_stride_argb == width * 4) {
+      dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_r = src_stride_g = src_stride_b = dst_stride_argb = 0;
@@ -2088,7 +2124,7 @@ int YUY2ToI422(const uint8_t* src_yuy2,
   // Coalesce rows.
   if (src_stride_yuy2 == width * 2 && dst_stride_y == width &&
       dst_stride_u * 2 == width && dst_stride_v * 2 == width &&
-      width * height <= 32768) {
+      (ptrdiff_t)width * height <= 32768) {
     width *= height;
     height = 1;
     src_stride_yuy2 = dst_stride_y = dst_stride_u = dst_stride_v = 0;
@@ -2194,7 +2230,7 @@ int UYVYToI422(const uint8_t* src_uyvy,
   // Coalesce rows.
   if (src_stride_uyvy == width * 2 && dst_stride_y == width &&
       dst_stride_u * 2 == width && dst_stride_v * 2 == width &&
-      width * height <= 32768) {
+      (ptrdiff_t)width * height <= 32768) {
     width *= height;
     height = 1;
     src_stride_uyvy = dst_stride_y = dst_stride_u = dst_stride_v = 0;
@@ -2292,7 +2328,8 @@ int YUY2ToY(const uint8_t* src_yuy2,
     src_stride_yuy2 = -src_stride_yuy2;
   }
   // Coalesce rows.
-  if (src_stride_yuy2 == width * 2 && dst_stride_y == width) {
+  if (src_stride_yuy2 == width * 2 && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_yuy2 = dst_stride_y = 0;
@@ -2359,7 +2396,8 @@ int UYVYToY(const uint8_t* src_uyvy,
     src_stride_uyvy = -src_stride_uyvy;
   }
   // Coalesce rows.
-  if (src_stride_uyvy == width * 2 && dst_stride_y == width) {
+  if (src_stride_uyvy == width * 2 && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_uyvy = dst_stride_y = 0;
@@ -2812,7 +2850,7 @@ int ARGBBlend(const uint8_t* src_argb0,
   }
   // Coalesce rows.
   if (src_stride_argb0 == width * 4 && src_stride_argb1 == width * 4 &&
-      dst_stride_argb == width * 4) {
+      dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb0 = src_stride_argb1 = dst_stride_argb = 0;
@@ -2879,7 +2917,8 @@ int BlendPlane(const uint8_t* src_y0,
 
   // Coalesce rows for Y plane.
   if (src_stride_y0 == width && src_stride_y1 == width &&
-      alpha_stride == width && dst_stride_y == width) {
+      alpha_stride == width && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_y0 = src_stride_y1 = alpha_stride = dst_stride_y = 0;
@@ -3041,7 +3080,7 @@ int I420Blend(const uint8_t* src_y0,
     }
     // Subsample 2 rows of UV to half width and half height.
     ScaleRowDown2(alpha, alpha_stride, halfalpha, halfwidth);
-    alpha += alpha_stride * 2;
+    alpha += (ptrdiff_t)alpha_stride * 2;
     BlendPlaneRow(src_u0, src_u1, halfalpha, dst_u, halfwidth);
     BlendPlaneRow(src_v0, src_v1, halfalpha, dst_v, halfwidth);
     src_u0 += src_stride_u0;
@@ -3079,7 +3118,7 @@ int ARGBMultiply(const uint8_t* src_argb0,
   }
   // Coalesce rows.
   if (src_stride_argb0 == width * 4 && src_stride_argb1 == width * 4 &&
-      dst_stride_argb == width * 4) {
+      dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb0 = src_stride_argb1 = dst_stride_argb = 0;
@@ -3167,7 +3206,7 @@ int ARGBAdd(const uint8_t* src_argb0,
   }
   // Coalesce rows.
   if (src_stride_argb0 == width * 4 && src_stride_argb1 == width * 4 &&
-      dst_stride_argb == width * 4) {
+      dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb0 = src_stride_argb1 = dst_stride_argb = 0;
@@ -3260,7 +3299,7 @@ int ARGBSubtract(const uint8_t* src_argb0,
   }
   // Coalesce rows.
   if (src_stride_argb0 == width * 4 && src_stride_argb1 == width * 4 &&
-      dst_stride_argb == width * 4) {
+      dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb0 = src_stride_argb1 = dst_stride_argb = 0;
@@ -3345,7 +3384,8 @@ int RAWToRGB24(const uint8_t* src_raw,
     src_stride_raw = -src_stride_raw;
   }
   // Coalesce rows.
-  if (src_stride_raw == width * 3 && dst_stride_rgb24 == width * 3) {
+  if (src_stride_raw == width * 3 && dst_stride_rgb24 == width * 3 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_raw = dst_stride_rgb24 = 0;
@@ -3420,7 +3460,7 @@ void SetPlane(uint8_t* dst_y,
     dst_stride_y = -dst_stride_y;
   }
   // Coalesce rows.
-  if (dst_stride_y == width) {
+  if (dst_stride_y == width && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     dst_stride_y = 0;
@@ -3522,7 +3562,7 @@ int ARGBRect(uint8_t* dst_argb,
   }
   dst_argb += dst_y * dst_stride_argb + dst_x * 4;
   // Coalesce rows.
-  if (dst_stride_argb == width * 4) {
+  if (dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     dst_stride_argb = 0;
@@ -3598,7 +3638,8 @@ int ARGBAttenuate(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb = 0;
@@ -3685,7 +3726,8 @@ int ARGBUnattenuate(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb = 0;
@@ -3736,7 +3778,8 @@ int ARGBGrayTo(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb = 0;
@@ -3796,7 +3839,7 @@ int ARGBGray(uint8_t* dst_argb,
     return -1;
   }
   // Coalesce rows.
-  if (dst_stride_argb == width * 4) {
+  if (dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     dst_stride_argb = 0;
@@ -3854,7 +3897,7 @@ int ARGBSepia(uint8_t* dst_argb,
     return -1;
   }
   // Coalesce rows.
-  if (dst_stride_argb == width * 4) {
+  if (dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     dst_stride_argb = 0;
@@ -3920,7 +3963,8 @@ int ARGBColorMatrix(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb = 0;
@@ -4014,7 +4058,7 @@ int ARGBColorTable(uint8_t* dst_argb,
     return -1;
   }
   // Coalesce rows.
-  if (dst_stride_argb == width * 4) {
+  if (dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     dst_stride_argb = 0;
@@ -4050,7 +4094,7 @@ int RGBColorTable(uint8_t* dst_argb,
     return -1;
   }
   // Coalesce rows.
-  if (dst_stride_argb == width * 4) {
+  if (dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     dst_stride_argb = 0;
@@ -4095,7 +4139,7 @@ int ARGBQuantize(uint8_t* dst_argb,
     return -1;
   }
   // Coalesce rows.
-  if (dst_stride_argb == width * 4) {
+  if (dst_stride_argb == width * 4 && (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     dst_stride_argb = 0;
@@ -4294,7 +4338,8 @@ int ARGBShade(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb = 0;
@@ -4358,7 +4403,8 @@ int InterpolatePlane(const uint8_t* src0,
     dst_stride = -dst_stride;
   }
   // Coalesce rows.
-  if (src_stride0 == width && src_stride1 == width && dst_stride == width) {
+  if (src_stride0 == width && src_stride1 == width && dst_stride == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride0 = src_stride1 = dst_stride = 0;
@@ -4443,7 +4489,8 @@ int InterpolatePlane_16(const uint16_t* src0,
     dst_stride = -dst_stride;
   }
   // Coalesce rows.
-  if (src_stride0 == width && src_stride1 == width && dst_stride == width) {
+  if (src_stride0 == width && src_stride1 == width && dst_stride == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride0 = src_stride1 = dst_stride = 0;
@@ -4660,7 +4707,8 @@ int AR64Shuffle(const uint16_t* src_ar64,
     src_stride_ar64 = -src_stride_ar64;
   }
   // Coalesce rows.
-  if (src_stride_ar64 == width * 4 && dst_stride_ar64 == width * 4) {
+  if (src_stride_ar64 == width * 4 && dst_stride_ar64 == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_ar64 = dst_stride_ar64 = 0;
@@ -5101,7 +5149,8 @@ int ARGBPolynomial(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb = 0;
@@ -5151,7 +5200,8 @@ int HalfFloatPlane(const uint16_t* src_y,
     src_stride_y = -src_stride_y;
   }
   // Coalesce rows.
-  if (src_stride_y == width && dst_stride_y == width) {
+  if (src_stride_y == width && dst_stride_y == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_y = dst_stride_y = 0;
@@ -5259,7 +5309,8 @@ int ARGBLumaColorTable(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb = 0;
@@ -5299,7 +5350,8 @@ int ARGBCopyAlpha(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4) {
+  if (src_stride_argb == width * 4 && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_argb = 0;
@@ -5347,7 +5399,8 @@ int ARGBExtractAlpha(const uint8_t* src_argb,
     src_stride_argb = -src_stride_argb;
   }
   // Coalesce rows.
-  if (src_stride_argb == width * 4 && dst_stride_a == width) {
+  if (src_stride_argb == width * 4 && dst_stride_a == width &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_argb = dst_stride_a = 0;
@@ -5419,7 +5472,8 @@ int ARGBCopyYToAlpha(const uint8_t* src_y,
     src_stride_y = -src_stride_y;
   }
   // Coalesce rows.
-  if (src_stride_y == width && dst_stride_argb == width * 4) {
+  if (src_stride_y == width && dst_stride_argb == width * 4 &&
+      (ptrdiff_t)width * height <= INT_MAX) {
     width *= height;
     height = 1;
     src_stride_y = dst_stride_argb = 0;
