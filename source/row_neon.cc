@@ -1063,7 +1063,7 @@ void MergeAR64Row_NEON(const uint16_t* src_r,
         "+r"(width)      // %5
       : "r"(shift),      // %6
         "r"(mask)        // %7
-      : "memory", "cc", "q0", "q1", "q2", "q3", "q15");
+      : "memory", "cc", "q0", "q1", "q2", "q3", "q14", "q15");
 }
 
 void MergeXR64Row_NEON(const uint16_t* src_r,
@@ -1100,7 +1100,7 @@ void MergeXR64Row_NEON(const uint16_t* src_r,
         "+r"(width)      // %4
       : "r"(shift),      // %5
         "r"(mask)        // %6
-      : "memory", "cc", "q0", "q1", "q2", "q3", "q15");
+      : "memory", "cc", "q0", "q1", "q2", "q3", "q14", "q15");
 }
 
 void MergeARGB16To8Row_NEON(const uint16_t* src_r,
