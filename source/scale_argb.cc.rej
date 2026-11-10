@@ -1,5 +1,7 @@
 diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
-@@ -38,8 +38,8 @@ static void ScaleARGBDown2(int src_width,
+@@ -36,12 +36,12 @@ static void ScaleARGBDown2(int src_width,
+ // its original size.
+ static void ScaleARGBDown2(int src_width,
                             int src_height,
                             int dst_width,
                             int dst_height,
@@ -10,7 +12,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
                             const uint8_t* src_argb,
                             uint8_t* dst_argb,
                             int x,
-@@ -48,7 +48,7 @@ static void ScaleARGBDown2(int src_width,
+                            int dx,
+                            int y,
+@@ -46,11 +46,11 @@ static void ScaleARGBDown2(int src_width,
+                            int dx,
+                            int y,
                             int dy,
                             enum FilterMode filtering) {
    int j;
@@ -19,7 +25,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
    void (*ScaleARGBRowDown2)(const uint8_t* src_argb, ptrdiff_t src_stride,
                              uint8_t* dst_argb, int dst_width) =
        filtering == kFilterNone
-@@ -62,9 +62,9 @@ static void ScaleARGBDown2(int src_width,
+           ? ScaleARGBRowDown2_C
+           : (filtering == kFilterLinear ? ScaleARGBRowDown2Linear_C
+@@ -60,13 +60,13 @@ static void ScaleARGBDown2(int src_width,
+   (void)dx;
+   assert(dx == 65536 * 2);      // Test scale factor of 2.
    assert((dy & 0x1ffff) == 0);  // Test vertical scale is multiple of 2.
    // Advance to odd row, even column.
    if (filtering == kFilterBilinear) {
@@ -31,7 +41,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
    }
  
  #if defined(HAS_SCALEARGBROWDOWN2_SSE2)
-@@ -152,8 +152,8 @@ static int ScaleARGBDown4Box(int src_width,
+   if (TestCpuFlag(kCpuHasSSE2)) {
+     ScaleARGBRowDown2 =
+@@ -150,12 +150,12 @@ static int ScaleARGBDown4Box(int src_width,
+ // its original size.
+ static int ScaleARGBDown4Box(int src_width,
                               int src_height,
                               int dst_width,
                               int dst_height,
@@ -42,7 +56,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
                               const uint8_t* src_argb,
                               uint8_t* dst_argb,
                               int x,
-@@ -169,12 +169,12 @@ static int ScaleARGBDown4Box(int src_width,
+                              int dx,
+                              int y,
+@@ -167,16 +167,16 @@ static int ScaleARGBDown4Box(int src_width,
+   // but implemented via a 2 pass wrapper that uses a very small array on the
+   // stack with a horizontal loop.
    align_buffer_64(row, row_size * 2);
    if (!row)
      return 1;
@@ -57,7 +75,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
    (void)src_width;
    (void)src_height;
    (void)dx;
-@@ -226,8 +226,8 @@ static void ScaleARGBDownEven(int src_width,
+   assert(dx == 65536 * 4);      // Test scale factor of 4.
+   assert((dy & 0x3ffff) == 0);  // Test vertical scale is multiple of 4.
+@@ -224,12 +224,12 @@ static void ScaleARGBDownEven(int src_width,
+ // multiple of its original size.
+ static void ScaleARGBDownEven(int src_width,
                                int src_height,
                                int dst_width,
                                int dst_height,
@@ -68,7 +90,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
                                const uint8_t* src_argb,
                                uint8_t* dst_argb,
                                int x,
-@@ -237,7 +237,7 @@ static void ScaleARGBDownEven(int src_width,
+                               int dx,
+                               int y,
+@@ -235,11 +235,11 @@ static void ScaleARGBDownEven(int src_width,
+                               int y,
+                               int dy,
                                enum FilterMode filtering) {
    int j;
    int col_step = dx >> 16;
@@ -77,7 +103,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
    void (*ScaleARGBRowDownEven)(const uint8_t* src_argb, ptrdiff_t src_stride,
                                 int src_step, uint8_t* dst_argb, int dst_width) =
        filtering ? ScaleARGBRowDownEvenBox_C : ScaleARGBRowDownEven_C;
-@@ -245,7 +245,7 @@ static void ScaleARGBDownEven(int src_width,
+   (void)src_width;
+   (void)src_height;
+@@ -243,11 +243,11 @@ static void ScaleARGBDownEven(int src_width,
+       filtering ? ScaleARGBRowDownEvenBox_C : ScaleARGBRowDownEven_C;
+   (void)src_width;
    (void)src_height;
    assert(IS_ALIGNED(src_width, 2));
    assert(IS_ALIGNED(src_height, 2));
@@ -86,7 +116,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
  #if defined(HAS_SCALEARGBROWDOWNEVEN_SSE2)
    if (TestCpuFlag(kCpuHasSSE2)) {
      ScaleARGBRowDownEven = filtering ? ScaleARGBRowDownEvenBox_Any_SSE2
-@@ -302,8 +302,8 @@ static int ScaleARGBBilinearDown(int src_width,
+                                      : ScaleARGBRowDownEven_Any_SSE2;
+     if (IS_ALIGNED(dst_width, 4)) {
+@@ -300,12 +300,12 @@ static int ScaleARGBBilinearDown(int src_width,
+ // Scale ARGB down with bilinear interpolation.
+ static int ScaleARGBBilinearDown(int src_width,
                                   int src_height,
                                   int dst_width,
                                   int dst_height,
@@ -97,7 +131,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
                                   const uint8_t* src_argb,
                                   uint8_t* dst_argb,
                                   int x,
-@@ -413,7 +413,7 @@ static int ScaleARGBBilinearDown(int src_width,
+                                  int dx,
+                                  int y,
+@@ -411,11 +411,11 @@ static int ScaleARGBBilinearDown(int src_width,
+     if (y > max_y) {
+       y = max_y;
      }
      for (j = 0; j < dst_height; ++j) {
        int yi = y >> 16;
@@ -106,7 +144,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
        if (filtering == kFilterLinear) {
          ScaleARGBFilterCols(dst_argb, src, dst_width, x, dx);
        } else {
-@@ -437,8 +437,8 @@ static int ScaleARGBBilinearUp(int src_width,
+         int yf = (y >> 8) & 255;
+         InterpolateRow(row, src, src_stride, clip_src_width, yf);
+@@ -435,12 +435,12 @@ static int ScaleARGBBilinearUp(int src_width,
+ // Scale ARGB up with bilinear interpolation.
+ static int ScaleARGBBilinearUp(int src_width,
                                 int src_height,
                                 int dst_width,
                                 int dst_height,
@@ -117,7 +159,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
                                 const uint8_t* src_argb,
                                 uint8_t* dst_argb,
                                 int x,
-@@ -562,7 +562,7 @@ static int ScaleARGBBilinearUp(int src_width,
+                                int dx,
+                                int y,
+@@ -560,11 +560,11 @@ static int ScaleARGBBilinearUp(int src_width,
+     y = max_y;
+   }
  
    {
      int yi = y >> 16;
@@ -126,7 +172,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
  
      // Allocate 2 rows of ARGB.
      const int row_size = (dst_width * 4 + 31) & ~31;
-@@ -571,7 +571,7 @@ static int ScaleARGBBilinearUp(int src_width,
+     align_buffer_64(row, row_size * 2);
+     if (!row)
+@@ -569,11 +569,11 @@ static int ScaleARGBBilinearUp(int src_width,
+     align_buffer_64(row, row_size * 2);
+     if (!row)
        return 1;
  
      uint8_t* rowptr = row;
@@ -135,7 +185,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
      int lasty = yi;
  
      ScaleARGBFilterCols(rowptr, src, dst_width, x, dx);
-@@ -589,7 +589,7 @@ static int ScaleARGBBilinearUp(int src_width,
+     if (src_height > 1) {
+       src += src_stride;
+@@ -587,11 +587,11 @@ static int ScaleARGBBilinearUp(int src_width,
+       yi = y >> 16;
+       if (yi != lasty) {
          if (y > max_y) {
            y = max_y;
            yi = y >> 16;
@@ -144,7 +198,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
          }
          if (yi != lasty) {
            ScaleARGBFilterCols(rowptr, src, dst_width, x, dx);
-@@ -615,283 +615,6 @@ static int ScaleARGBBilinearUp(int src_width,
+           rowptr += rowstride;
+           rowstride = -rowstride;
+@@ -613,287 +613,10 @@ static int ScaleARGBBilinearUp(int src_width,
+     free_aligned_buffer_64(row);
+   }
    return 0;
  }
  
@@ -428,7 +486,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
  // Scale ARGB to/from any dimensions, without interpolation.
  // Fixed point math is used for performance: The upper 16 bits
  // of x and dx is the integer part of the source position and
-@@ -901,8 +624,8 @@ static void ScaleARGBSimple(int src_width,
+ // the lower 16 bits are the fixed decimal part.
+ 
+@@ -899,12 +622,12 @@ static void ScaleARGBSimple(int src_width,
+ 
+ static void ScaleARGBSimple(int src_width,
                              int src_height,
                              int dst_width,
                              int dst_height,
@@ -439,7 +501,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
                              const uint8_t* src_argb,
                              uint8_t* dst_argb,
                              int x,
-@@ -945,8 +668,8 @@ static void ScaleARGBSimple(int src_width,
+                             int dx,
+                             int y,
+@@ -943,12 +666,12 @@ static void ScaleARGBSimple(int src_width,
+     }
+ #endif
    }
  
    for (j = 0; j < dst_height; ++j) {
@@ -450,7 +516,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
      dst_argb += dst_stride;
      y += dy;
    }
-@@ -981,7 +704,7 @@ static int ScaleARGB(const uint8_t* src,
+ }
+ 
+@@ -979,11 +702,11 @@ static int ScaleARGB(const uint8_t* src,
+                                 filtering);
+ 
    // Negative src_height means invert the image.
    if (src_height < 0) {
      src_height = -src_height;
@@ -459,7 +529,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
      src_stride = -src_stride;
    }
    ScaleSlope(src_width, src_height, dst_width, dst_height, filtering, &x, &y,
-@@ -996,8 +719,8 @@ static int ScaleARGB(const uint8_t* src,
+              &dx, &dy);
+   src_width = Abs(src_width);
+@@ -994,12 +717,12 @@ static int ScaleARGB(const uint8_t* src,
+     dst += clip_x * 4;
+   }
    if (clip_y) {
      int64_t clipf = (int64_t)(clip_y)*dy;
      y += (clipf & 0xffff);
@@ -470,7 +544,11 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
    }
  
    // Special case for integer step values.
-@@ -1030,7 +753,7 @@ static int ScaleARGB(const uint8_t* src,
+   if (((dx | dy) & 0xffff) == 0) {
+     if (!dx || !dy) {  // 1 pixel wide and/or tall.
+@@ -1028,11 +751,11 @@ static int ScaleARGB(const uint8_t* src,
+       // Optimized odd scale down. ie 3, 5, 7, 9x.
+       if ((dx & 0x10000) && (dy & 0x10000)) {
          filtering = kFilterNone;
          if (dx == 0x10000 && dy == 0x10000) {
            // Straight copy.
@@ -479,3 +557,5 @@ diff a/source/scale_argb.cc b/source/scale_argb.cc	(rejected hunks)
                     src_stride, dst, dst_stride, clip_width, clip_height);
            return 0;
          }
+       }
+     }

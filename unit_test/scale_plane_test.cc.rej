@@ -1,5 +1,7 @@
 diff a/unit_test/scale_plane_test.cc b/unit_test/scale_plane_test.cc	(rejected hunks)
-@@ -37,6 +37,108 @@
+@@ -35,10 +35,112 @@
+ #define ENABLE_FULL_TESTS
+ #endif
  
  namespace libyuv {
  
@@ -108,3 +110,5 @@ diff a/unit_test/scale_plane_test.cc b/unit_test/scale_plane_test.cc	(rejected h
  #ifdef ENABLE_ROW_TESTS
  #ifdef HAS_SCALEROWDOWN2_SSSE3
  TEST_F(LibYUVScaleTest, TestScaleRowDown2Box_Odd_SSSE3) {
+   SIMD_ALIGNED(uint8_t orig_pixels[128 * 2]);
+   SIMD_ALIGNED(uint8_t dst_pixels_opt[64]);

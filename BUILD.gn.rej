@@ -1,5 +1,7 @@
 diff a/BUILD.gn b/BUILD.gn	(rejected hunks)
-@@ -232,7 +233,12 @@ if (libyuv_use_neon) {
+@@ -230,11 +231,16 @@ if (libyuv_use_neon) {
+     public_configs = [ ":libyuv_config" ]
+ 
      # The -march arguments below are incompatible with libc++ modules.
      use_libcxx_modules = false
      if (current_cpu == "arm64") {
@@ -12,7 +14,11 @@ diff a/BUILD.gn b/BUILD.gn	(rejected hunks)
      } else {
        configs -= [ "//build/config/compiler:compiler_arm_fpu" ]
        cflags = [ "-mfpu=neon" ]
-@@ -252,7 +258,12 @@ if (libyuv_use_sve) {
+     }
+   }
+@@ -250,11 +256,16 @@ if (libyuv_use_sve) {
+ 
+     # The -march arguments below are incompatible with libc++ modules.
      use_libcxx_modules = false
  
      # SVE2 is an Armv9-A feature.
@@ -25,7 +31,11 @@ diff a/BUILD.gn b/BUILD.gn	(rejected hunks)
    }
  }
  
-@@ -272,7 +283,12 @@ if (libyuv_use_sme) {
+ if (libyuv_use_sme) {
+   static_library("libyuv_sme") {
+@@ -270,11 +281,16 @@ if (libyuv_use_sme) {
+ 
+     # The -march arguments below are incompatible with libc++ modules.
      use_libcxx_modules = false
  
      # SME is an Armv9-A feature.
@@ -38,3 +48,5 @@ diff a/BUILD.gn b/BUILD.gn	(rejected hunks)
    }
  }
  
+ if (libyuv_use_lsx) {
+   static_library("libyuv_lsx") {

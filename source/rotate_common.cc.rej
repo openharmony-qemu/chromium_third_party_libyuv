@@ -1,5 +1,7 @@
 diff a/source/rotate_common.cc b/source/rotate_common.cc	(rejected hunks)
-@@ -191,10 +193,10 @@ void Transpose4x4_32_C(const uint8_t* src,
+@@ -189,14 +191,14 @@ void Transpose4x4_32_C(const uint8_t* src,
+     ((uint32_t*)(dst2))[3] = p23;
+     ((uint32_t*)(dst3))[0] = p30;
      ((uint32_t*)(dst3))[1] = p31;
      ((uint32_t*)(dst3))[2] = p32;
      ((uint32_t*)(dst3))[3] = p33;
@@ -14,3 +16,5 @@ diff a/source/rotate_common.cc b/source/rotate_common.cc	(rejected hunks)
      dst += 4 * 4;  // advance 4 columns
      dst1 += 4 * 4;
      dst2 += 4 * 4;
+     dst3 += 4 * 4;
+   }

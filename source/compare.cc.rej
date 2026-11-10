@@ -1,5 +1,7 @@
 diff a/source/compare.cc b/source/compare.cc	(rejected hunks)
-@@ -11,6 +11,7 @@
+@@ -9,10 +9,11 @@
+  */
+ 
  #include "libyuv/compare.h"
  
  #include <float.h>
@@ -7,7 +9,11 @@ diff a/source/compare.cc b/source/compare.cc	(rejected hunks)
  #include <math.h>
  #ifdef _OPENMP
  #include <omp.h>
-@@ -106,8 +107,11 @@ uint32_t ARGBDetect(const uint8_t* argb,
+ #endif
+ 
+@@ -104,12 +105,15 @@ uint32_t ARGBDetect(const uint8_t* argb,
+                     int width,
+                     int height) {
    uint32_t fourcc = 0;
    int h;
  
@@ -20,7 +26,11 @@ diff a/source/compare.cc b/source/compare.cc	(rejected hunks)
      width *= height;
      height = 1;
      stride_argb = 0;
-@@ -245,8 +249,12 @@ uint64_t ComputeSumSquareErrorPlane(const uint8_t* src_a,
+   }
+   for (h = 0; h < height && fourcc == 0; ++h) {
+@@ -243,12 +247,16 @@ uint64_t ComputeSumSquareErrorPlane(const uint8_t* src_a,
+                                     int stride_b,
+                                     int width,
                                      int height) {
    uint64_t sse = 0;
    int h;
@@ -34,3 +44,5 @@ diff a/source/compare.cc b/source/compare.cc	(rejected hunks)
      width *= height;
      height = 1;
      stride_a = stride_b = 0;
+   }
+   for (h = 0; h < height; ++h) {

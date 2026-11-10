@@ -1,5 +1,7 @@
 diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
-@@ -11,6 +11,7 @@
+@@ -9,10 +9,11 @@
+  */
+ 
  #include "libyuv/planar_functions.h"
  
  #include <assert.h>
@@ -7,7 +9,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
  #include <string.h>  // for memset()
  
  #include "libyuv/cpu_id.h"
-@@ -42,7 +43,8 @@ void CopyPlane(const uint8_t* src_y,
+ #include "libyuv/row.h"
+ #include "libyuv/scale_row.h"  // for ScaleRowDown2
+@@ -40,11 +41,12 @@ void CopyPlane(const uint8_t* src_y,
+     height = -height;
+     dst_y = dst_y + (height - 1) * dst_stride_y;
      dst_stride_y = -dst_stride_y;
    }
    // Coalesce rows.
@@ -17,7 +23,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_y = 0;
-@@ -130,7 +132,8 @@ void Convert16To8Plane(const uint16_t* src_y,
+   }
+   // Nothing to do.
+@@ -128,11 +130,12 @@ void Convert16To8Plane(const uint16_t* src_y,
+     height = -height;
+     dst_y = dst_y + (height - 1) * dst_stride_y;
      dst_stride_y = -dst_stride_y;
    }
    // Coalesce rows.
@@ -27,7 +37,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_y = 0;
-@@ -204,7 +207,8 @@ void Convert8To16Plane(const uint8_t* src_y,
+   }
+ #if defined(HAS_CONVERT16TO8ROW_NEON)
+@@ -202,11 +205,12 @@ void Convert8To16Plane(const uint8_t* src_y,
+     height = -height;
+     dst_y = dst_y + (height - 1) * dst_stride_y;
      dst_stride_y = -dst_stride_y;
    }
    // Coalesce rows.
@@ -37,7 +51,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_y = 0;
-@@ -271,7 +275,8 @@ void Convert8To8Plane(const uint8_t* src_y,
+   }
+ #if defined(HAS_CONVERT8TO16ROW_SSE2)
+@@ -269,11 +273,12 @@ void Convert8To8Plane(const uint8_t* src_y,
+     height = -height;
+     dst_y = dst_y + (height - 1) * dst_stride_y;
      dst_stride_y = -dst_stride_y;
    }
    // Coalesce rows.
@@ -47,7 +65,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_y = 0;
-@@ -602,7 +607,7 @@ void SplitUVPlane(const uint8_t* src_uv,
+   }
+ #if defined(HAS_CONVERT8TO8ROW_NEON)
+@@ -600,11 +605,11 @@ void SplitUVPlane(const uint8_t* src_uv,
+     dst_stride_u = -dst_stride_u;
+     dst_stride_v = -dst_stride_v;
    }
    // Coalesce rows.
    if (src_stride_uv == width * 2 && dst_stride_u == width &&
@@ -56,7 +78,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_uv = dst_stride_u = dst_stride_v = 0;
-@@ -677,7 +682,7 @@ void MergeUVPlane(const uint8_t* src_u,
+   }
+ #if defined(HAS_SPLITUVROW_SSE2)
+@@ -675,11 +680,11 @@ void MergeUVPlane(const uint8_t* src_u,
+     dst_uv = dst_uv + (height - 1) * dst_stride_uv;
+     dst_stride_uv = -dst_stride_uv;
    }
    // Coalesce rows.
    if (src_stride_u == width && src_stride_v == width &&
@@ -65,7 +91,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_u = src_stride_v = dst_stride_uv = 0;
-@@ -771,7 +776,7 @@ void SplitUVPlane_16(const uint16_t* src_uv,
+   }
+ #if defined(HAS_MERGEUVROW_SSE2)
+@@ -769,11 +774,11 @@ void SplitUVPlane_16(const uint16_t* src_uv,
+     dst_stride_u = -dst_stride_u;
+     dst_stride_v = -dst_stride_v;
    }
    // Coalesce rows.
    if (src_stride_uv == width * 2 && dst_stride_u == width &&
@@ -74,7 +104,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_uv = dst_stride_u = dst_stride_v = 0;
-@@ -829,7 +834,7 @@ void MergeUVPlane_16(const uint16_t* src_u,
+   }
+ #if defined(HAS_SPLITUVROW_16_AVX2)
+@@ -827,11 +832,11 @@ void MergeUVPlane_16(const uint16_t* src_u,
+     dst_uv = dst_uv + (height - 1) * dst_stride_uv;
+     dst_stride_uv = -dst_stride_uv;
    }
    // Coalesce rows.
    if (src_stride_u == width && src_stride_v == width &&
@@ -83,7 +117,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_u = src_stride_v = dst_stride_uv = 0;
-@@ -888,7 +893,8 @@ void ConvertToMSBPlane_16(const uint16_t* src_y,
+   }
+ #if defined(HAS_MERGEUVROW_16_AVX2)
+@@ -886,11 +891,12 @@ void ConvertToMSBPlane_16(const uint16_t* src_y,
+     height = -height;
+     dst_y = dst_y + (height - 1) * dst_stride_y;
      dst_stride_y = -dst_stride_y;
    }
    // Coalesce rows.
@@ -93,7 +131,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_y = 0;
-@@ -946,7 +952,8 @@ void ConvertToLSBPlane_16(const uint16_t* src_y,
+   }
+ 
+@@ -944,11 +950,12 @@ void ConvertToLSBPlane_16(const uint16_t* src_y,
+     height = -height;
+     dst_y = dst_y + (height - 1) * dst_stride_y;
      dst_stride_y = -dst_stride_y;
    }
    // Coalesce rows.
@@ -103,7 +145,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_y = 0;
-@@ -1002,7 +1009,8 @@ void SwapUVPlane(const uint8_t* src_uv,
+   }
+ 
+@@ -1000,11 +1007,12 @@ void SwapUVPlane(const uint8_t* src_uv,
+     height = -height;
+     src_uv = src_uv + (height - 1) * src_stride_uv;
      src_stride_uv = -src_stride_uv;
    }
    // Coalesce rows.
@@ -113,7 +159,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_uv = dst_stride_vu = 0;
-@@ -1363,7 +1371,8 @@ void SplitRGBPlane(const uint8_t* src_rgb,
+   }
+ 
+@@ -1361,11 +1369,12 @@ void SplitRGBPlane(const uint8_t* src_rgb,
+     dst_stride_g = -dst_stride_g;
+     dst_stride_b = -dst_stride_b;
    }
    // Coalesce rows.
    if (src_stride_rgb == width * 3 && dst_stride_r == width &&
@@ -123,7 +173,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_rgb = dst_stride_r = dst_stride_g = dst_stride_b = 0;
-@@ -1443,7 +1452,7 @@ void MergeRGBPlane(const uint8_t* src_r,
+   }
+ #if defined(HAS_SPLITRGBROW_SSSE3)
+@@ -1441,11 +1450,11 @@ void MergeRGBPlane(const uint8_t* src_r,
+     dst_rgb = dst_rgb + (height - 1) * dst_stride_rgb;
+     dst_stride_rgb = -dst_stride_rgb;
    }
    // Coalesce rows.
    if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
@@ -132,7 +186,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_r = src_stride_g = src_stride_b = dst_stride_rgb = 0;
-@@ -1498,13 +1507,14 @@ static void SplitARGBPlaneAlpha(const uint8_t* src_argb,
+   }
+ #if defined(HAS_MERGERGBROW_SSSE3)
+@@ -1496,17 +1505,18 @@ static void SplitARGBPlaneAlpha(const uint8_t* src_argb,
+   int y;
+   void (*SplitARGBRow)(const uint8_t* src_rgb, uint8_t* dst_r, uint8_t* dst_g,
                         uint8_t* dst_b, uint8_t* dst_a, int width) =
        SplitARGBRow_C;
  
@@ -149,7 +207,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_r = dst_stride_g = dst_stride_b =
-@@ -1573,13 +1583,14 @@ static void SplitARGBPlaneOpaque(const uint8_t* src_argb,
+         dst_stride_a = 0;
+   }
+@@ -1571,17 +1581,18 @@ static void SplitARGBPlaneOpaque(const uint8_t* src_argb,
+                                  int width,
+                                  int height) {
    int y;
    void (*SplitXRGBRow)(const uint8_t* src_rgb, uint8_t* dst_r, uint8_t* dst_g,
                         uint8_t* dst_b, int width) = SplitXRGBRow_C;
@@ -166,7 +228,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_r = dst_stride_g = dst_stride_b = 0;
-@@ -1686,13 +1697,14 @@ static void MergeARGBPlaneAlpha(const uint8_t* src_r,
+   }
+ 
+@@ -1684,17 +1695,18 @@ static void MergeARGBPlaneAlpha(const uint8_t* src_r,
+   int y;
+   void (*MergeARGBRow)(const uint8_t* src_r, const uint8_t* src_g,
                         const uint8_t* src_b, const uint8_t* src_a,
                         uint8_t* dst_argb, int width) = MergeARGBRow_C;
  
@@ -183,7 +249,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_r = src_stride_g = src_stride_b = src_stride_a =
-@@ -1754,13 +1766,13 @@ static void MergeARGBPlaneOpaque(const uint8_t* src_r,
+         dst_stride_argb = 0;
+   }
+@@ -1752,17 +1764,17 @@ static void MergeARGBPlaneOpaque(const uint8_t* src_r,
+   int y;
+   void (*MergeXRGBRow)(const uint8_t* src_r, const uint8_t* src_g,
                         const uint8_t* src_b, uint8_t* dst_argb, int width) =
        MergeXRGBRow_C;
  
@@ -199,7 +269,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_r = src_stride_g = src_stride_b = dst_stride_argb = 0;
-@@ -1853,6 +1865,9 @@ void MergeXR30Plane(const uint16_t* src_r,
+   }
+ #if defined(HAS_MERGEXRGBROW_SSE2)
+@@ -1851,10 +1863,13 @@ void MergeXR30Plane(const uint16_t* src_r,
+   int y;
+   void (*MergeXR30Row)(const uint16_t* src_r, const uint16_t* src_g,
                         const uint16_t* src_b, uint8_t* dst_ar30, int depth,
                         int width) = MergeXR30Row_C;
  
@@ -209,7 +283,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
    // Negative height means invert the image.
    if (height < 0) {
      height = -height;
-@@ -1861,7 +1876,7 @@ void MergeXR30Plane(const uint16_t* src_r,
+     dst_ar30 = dst_ar30 + (height - 1) * dst_stride_ar30;
+     dst_stride_ar30 = -dst_stride_ar30;
+@@ -1859,11 +1874,11 @@ void MergeXR30Plane(const uint16_t* src_r,
+     dst_ar30 = dst_ar30 + (height - 1) * dst_stride_ar30;
+     dst_stride_ar30 = -dst_stride_ar30;
    }
    // Coalesce rows.
    if (src_stride_r == width && src_stride_g == width && src_stride_b == width &&
@@ -218,7 +296,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_r = src_stride_g = src_stride_b = dst_stride_ar30 = 0;
-@@ -1919,8 +1934,14 @@ static void MergeAR64PlaneAlpha(const uint16_t* src_r,
+   }
+ #if defined(HAS_MERGEXR30ROW_AVX2)
+@@ -1917,12 +1932,18 @@ static void MergeAR64PlaneAlpha(const uint16_t* src_r,
+   void (*MergeAR64Row)(const uint16_t* src_r, const uint16_t* src_g,
+                        const uint16_t* src_b, const uint16_t* src_a,
                         uint16_t* dst_argb, int depth, int width) =
        MergeAR64Row_C;
  
@@ -234,7 +316,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_r = src_stride_g = src_stride_b = src_stride_a =
-@@ -1970,9 +1991,14 @@ static void MergeAR64PlaneOpaque(const uint16_t* src_r,
+         dst_stride_ar64 = 0;
+   }
+@@ -1968,13 +1989,18 @@ static void MergeAR64PlaneOpaque(const uint16_t* src_r,
+   int y;
+   void (*MergeXR64Row)(const uint16_t* src_r, const uint16_t* src_g,
                         const uint16_t* src_b, uint16_t* dst_argb, int depth,
                         int width) = MergeXR64Row_C;
  
@@ -250,7 +336,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_r = src_stride_g = src_stride_b = dst_stride_ar64 = 0;
-@@ -2055,8 +2081,14 @@ static void MergeARGB16To8PlaneAlpha(const uint16_t* src_r,
+   }
+ #if defined(HAS_MERGEXR64ROW_AVX2)
+@@ -2053,12 +2079,18 @@ static void MergeARGB16To8PlaneAlpha(const uint16_t* src_r,
+   void (*MergeARGB16To8Row)(const uint16_t* src_r, const uint16_t* src_g,
+                             const uint16_t* src_b, const uint16_t* src_a,
                              uint8_t* dst_argb, int depth, int width) =
        MergeARGB16To8Row_C;
  
@@ -266,7 +356,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_r = src_stride_g = src_stride_b = src_stride_a =
-@@ -2106,9 +2138,14 @@ static void MergeARGB16To8PlaneOpaque(const uint16_t* src_r,
+         dst_stride_argb = 0;
+   }
+@@ -2104,13 +2136,18 @@ static void MergeARGB16To8PlaneOpaque(const uint16_t* src_r,
+   int y;
+   void (*MergeXRGB16To8Row)(const uint16_t* src_r, const uint16_t* src_g,
                              const uint16_t* src_b, uint8_t* dst_argb, int depth,
                              int width) = MergeXRGB16To8Row_C;
  
@@ -282,7 +376,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_r = src_stride_g = src_stride_b = dst_stride_argb = 0;
-@@ -2200,7 +2237,7 @@ int YUY2ToI422(const uint8_t* src_yuy2,
+   }
+ #if defined(HAS_MERGEXRGB16TO8ROW_AVX2)
+@@ -2198,11 +2235,11 @@ int YUY2ToI422(const uint8_t* src_yuy2,
+     src_stride_yuy2 = -src_stride_yuy2;
+   }
    // Coalesce rows.
    if (src_stride_yuy2 == width * 2 && dst_stride_y == width &&
        dst_stride_u * 2 == width && dst_stride_v * 2 == width &&
@@ -291,7 +389,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_yuy2 = dst_stride_y = dst_stride_u = dst_stride_v = 0;
-@@ -2296,7 +2333,7 @@ int UYVYToI422(const uint8_t* src_uyvy,
+   }
+ #if defined(HAS_YUY2TOYROW_SSE2)
+@@ -2294,11 +2331,11 @@ int UYVYToI422(const uint8_t* src_uyvy,
+     src_stride_uyvy = -src_stride_uyvy;
+   }
    // Coalesce rows.
    if (src_stride_uyvy == width * 2 && dst_stride_y == width &&
        dst_stride_u * 2 == width && dst_stride_v * 2 == width &&
@@ -300,7 +402,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_uyvy = dst_stride_y = dst_stride_u = dst_stride_v = 0;
-@@ -2384,7 +2421,8 @@ int YUY2ToY(const uint8_t* src_yuy2,
+   }
+ #if defined(HAS_UYVYTOYROW_SSE2)
+@@ -2382,11 +2419,12 @@ int YUY2ToY(const uint8_t* src_yuy2,
+     height = -height;
+     src_yuy2 = src_yuy2 + (height - 1) * src_stride_yuy2;
      src_stride_yuy2 = -src_stride_yuy2;
    }
    // Coalesce rows.
@@ -310,7 +416,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_yuy2 = dst_stride_y = 0;
-@@ -2443,7 +2481,8 @@ int UYVYToY(const uint8_t* src_uyvy,
+   }
+ #if defined(HAS_YUY2TOYROW_SSE2)
+@@ -2441,11 +2479,12 @@ int UYVYToY(const uint8_t* src_uyvy,
+     height = -height;
+     src_uyvy = src_uyvy + (height - 1) * src_stride_uyvy;
      src_stride_uyvy = -src_stride_uyvy;
    }
    // Coalesce rows.
@@ -320,7 +430,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_uyvy = dst_stride_y = 0;
-@@ -2864,7 +2903,7 @@ int ARGBBlend(const uint8_t* src_argb0,
+   }
+ #if defined(HAS_UYVYTOYROW_SSE2)
+@@ -2862,11 +2901,11 @@ int ARGBBlend(const uint8_t* src_argb0,
+     dst_argb = dst_argb + (height - 1) * dst_stride_argb;
+     dst_stride_argb = -dst_stride_argb;
    }
    // Coalesce rows.
    if (src_stride_argb0 == width * 4 && src_stride_argb1 == width * 4 &&
@@ -329,7 +443,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb0 = src_stride_argb1 = dst_stride_argb = 0;
-@@ -2926,7 +2965,8 @@ int BlendPlane(const uint8_t* src_y0,
+   }
+ #if defined(HAS_ARGBBLENDROW_SSSE3)
+@@ -2924,11 +2963,12 @@ int BlendPlane(const uint8_t* src_y0,
+     dst_stride_y = -dst_stride_y;
+   }
  
    // Coalesce rows for Y plane.
    if (src_stride_y0 == width && src_stride_y1 == width &&
@@ -339,7 +457,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y0 = src_stride_y1 = alpha_stride = dst_stride_y = 0;
-@@ -3088,7 +3128,7 @@ int I420Blend(const uint8_t* src_y0,
+   }
+ 
+@@ -3086,11 +3126,11 @@ int I420Blend(const uint8_t* src_y0,
+     if (y == (height - 1)) {
+       alpha_stride = 0;
      }
      // Subsample 2 rows of UV to half width and half height.
      ScaleRowDown2(alpha, alpha_stride, halfalpha, halfwidth);
@@ -348,7 +470,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      BlendPlaneRow(src_u0, src_u1, halfalpha, dst_u, halfwidth);
      BlendPlaneRow(src_v0, src_v1, halfalpha, dst_v, halfwidth);
      src_u0 += src_stride_u0;
-@@ -3126,7 +3166,7 @@ int ARGBMultiply(const uint8_t* src_argb0,
+     src_u1 += src_stride_u1;
+     dst_u += dst_stride_u;
+@@ -3124,11 +3164,11 @@ int ARGBMultiply(const uint8_t* src_argb0,
+     dst_argb = dst_argb + (height - 1) * dst_stride_argb;
+     dst_stride_argb = -dst_stride_argb;
    }
    // Coalesce rows.
    if (src_stride_argb0 == width * 4 && src_stride_argb1 == width * 4 &&
@@ -357,7 +483,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb0 = src_stride_argb1 = dst_stride_argb = 0;
-@@ -3211,7 +3251,7 @@ int ARGBAdd(const uint8_t* src_argb0,
+   }
+ #if defined(HAS_ARGBMULTIPLYROW_SSE2)
+@@ -3209,11 +3249,11 @@ int ARGBAdd(const uint8_t* src_argb0,
+     dst_argb = dst_argb + (height - 1) * dst_stride_argb;
+     dst_stride_argb = -dst_stride_argb;
    }
    // Coalesce rows.
    if (src_stride_argb0 == width * 4 && src_stride_argb1 == width * 4 &&
@@ -366,7 +496,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb0 = src_stride_argb1 = dst_stride_argb = 0;
-@@ -3296,7 +3336,7 @@ int ARGBSubtract(const uint8_t* src_argb0,
+   }
+ #if defined(HAS_ARGBADDROW_SSE2)
+@@ -3294,11 +3334,11 @@ int ARGBSubtract(const uint8_t* src_argb0,
+     dst_argb = dst_argb + (height - 1) * dst_stride_argb;
+     dst_stride_argb = -dst_stride_argb;
    }
    // Coalesce rows.
    if (src_stride_argb0 == width * 4 && src_stride_argb1 == width * 4 &&
@@ -375,7 +509,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb0 = src_stride_argb1 = dst_stride_argb = 0;
-@@ -3373,7 +3413,8 @@ int RAWToRGB24(const uint8_t* src_raw,
+   }
+ #if defined(HAS_ARGBSUBTRACTROW_SSE2)
+@@ -3371,11 +3411,12 @@ int RAWToRGB24(const uint8_t* src_raw,
+     height = -height;
+     src_raw = src_raw + (height - 1) * src_stride_raw;
      src_stride_raw = -src_stride_raw;
    }
    // Coalesce rows.
@@ -385,7 +523,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_raw = dst_stride_rgb24 = 0;
-@@ -3440,7 +3481,7 @@ void SetPlane(uint8_t* dst_y,
+   }
+ #if defined(HAS_RAWTORGB24ROW_SSSE3)
+@@ -3438,11 +3479,11 @@ void SetPlane(uint8_t* dst_y,
+     height = -height;
+     dst_y = dst_y + (height - 1) * dst_stride_y;
      dst_stride_y = -dst_stride_y;
    }
    // Coalesce rows.
@@ -394,7 +536,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      dst_stride_y = 0;
-@@ -3537,7 +3578,7 @@ int ARGBRect(uint8_t* dst_argb,
+   }
+ #if defined(HAS_SETROW_NEON)
+@@ -3535,11 +3576,11 @@ int ARGBRect(uint8_t* dst_argb,
+     dst_argb = dst_argb + (height - 1) * dst_stride_argb;
+     dst_stride_argb = -dst_stride_argb;
    }
    dst_argb += dst_y * dst_stride_argb + dst_x * 4;
    // Coalesce rows.
@@ -403,7 +549,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      dst_stride_argb = 0;
-@@ -3605,7 +3646,8 @@ int ARGBAttenuate(const uint8_t* src_argb,
+   }
+ 
+@@ -3603,11 +3644,12 @@ int ARGBAttenuate(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -413,7 +563,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb = 0;
-@@ -3684,7 +3726,8 @@ int ARGBUnattenuate(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBATTENUATEROW_SSSE3)
+@@ -3682,11 +3724,12 @@ int ARGBUnattenuate(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -423,7 +577,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb = 0;
-@@ -3735,7 +3778,8 @@ int ARGBGrayTo(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBUNATTENUATEROW_SSE2)
+@@ -3733,11 +3776,12 @@ int ARGBGrayTo(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -433,7 +591,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb = 0;
-@@ -3790,7 +3834,7 @@ int ARGBGray(uint8_t* dst_argb,
+   }
+ #if defined(HAS_ARGBGRAYROW_SSSE3)
+@@ -3788,11 +3832,11 @@ int ARGBGray(uint8_t* dst_argb,
+   uint8_t* dst = dst_argb + dst_y * dst_stride_argb + dst_x * 4;
+   if (!dst_argb || width <= 0 || height <= 0 || dst_x < 0 || dst_y < 0) {
      return -1;
    }
    // Coalesce rows.
@@ -442,7 +604,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      dst_stride_argb = 0;
-@@ -3843,7 +3887,7 @@ int ARGBSepia(uint8_t* dst_argb,
+   }
+ #if defined(HAS_ARGBGRAYROW_SSSE3)
+@@ -3841,11 +3885,11 @@ int ARGBSepia(uint8_t* dst_argb,
+   uint8_t* dst = dst_argb + dst_y * dst_stride_argb + dst_x * 4;
+   if (!dst_argb || width <= 0 || height <= 0 || dst_x < 0 || dst_y < 0) {
      return -1;
    }
    // Coalesce rows.
@@ -451,7 +617,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      dst_stride_argb = 0;
-@@ -3904,7 +3948,8 @@ int ARGBColorMatrix(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBSEPIAROW_SSSE3)
+@@ -3902,11 +3946,12 @@ int ARGBColorMatrix(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -461,7 +631,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb = 0;
-@@ -3993,7 +4038,7 @@ int ARGBColorTable(uint8_t* dst_argb,
+   }
+ #if defined(HAS_ARGBCOLORMATRIXROW_SSSE3)
+@@ -3991,11 +4036,11 @@ int ARGBColorTable(uint8_t* dst_argb,
+   if (!dst_argb || !table_argb || width <= 0 || height <= 0 || dst_x < 0 ||
+       dst_y < 0) {
      return -1;
    }
    // Coalesce rows.
@@ -470,7 +644,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      dst_stride_argb = 0;
-@@ -4029,7 +4074,7 @@ int RGBColorTable(uint8_t* dst_argb,
+   }
+ #if defined(HAS_ARGBCOLORTABLEROW_X86)
+@@ -4027,11 +4072,11 @@ int RGBColorTable(uint8_t* dst_argb,
+   if (!dst_argb || !table_argb || width <= 0 || height <= 0 || dst_x < 0 ||
+       dst_y < 0) {
      return -1;
    }
    // Coalesce rows.
@@ -479,7 +657,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      dst_stride_argb = 0;
-@@ -4074,7 +4119,7 @@ int ARGBQuantize(uint8_t* dst_argb,
+   }
+ #if defined(HAS_RGBCOLORTABLEROW_X86)
+@@ -4072,11 +4117,11 @@ int ARGBQuantize(uint8_t* dst_argb,
+   if (!dst_argb || width <= 0 || height <= 0 || dst_x < 0 || dst_y < 0 ||
+       interval_size < 1 || interval_size > 255) {
      return -1;
    }
    // Coalesce rows.
@@ -488,7 +670,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      dst_stride_argb = 0;
-@@ -4268,7 +4313,8 @@ int ARGBShade(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBQUANTIZEROW_SSE2)
+@@ -4266,11 +4311,12 @@ int ARGBShade(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -498,7 +684,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb = 0;
-@@ -4327,7 +4373,8 @@ int InterpolatePlane(const uint8_t* src0,
+   }
+ #if defined(HAS_ARGBSHADEROW_SSE2)
+@@ -4325,11 +4371,12 @@ int InterpolatePlane(const uint8_t* src0,
+     height = -height;
+     dst = dst + (height - 1) * dst_stride;
      dst_stride = -dst_stride;
    }
    // Coalesce rows.
@@ -508,7 +698,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride0 = src_stride1 = dst_stride = 0;
-@@ -4409,7 +4456,8 @@ int InterpolatePlane_16(const uint16_t* src0,
+   }
+ #if defined(HAS_INTERPOLATEROW_SSSE3)
+@@ -4407,11 +4454,12 @@ int InterpolatePlane_16(const uint16_t* src0,
+     height = -height;
+     dst = dst + (height - 1) * dst_stride;
      dst_stride = -dst_stride;
    }
    // Coalesce rows.
@@ -518,7 +712,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride0 = src_stride1 = dst_stride = 0;
-@@ -4539,7 +4587,8 @@ int ARGBShuffle(const uint8_t* src_bgra,
+   }
+ #if defined(HAS_INTERPOLATEROW_16_SSSE3)
+@@ -4537,11 +4585,12 @@ int ARGBShuffle(const uint8_t* src_bgra,
+     height = -height;
+     src_bgra = src_bgra + (height - 1) * src_stride_bgra;
      src_stride_bgra = -src_stride_bgra;
    }
    // Coalesce rows.
@@ -528,7 +726,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_bgra = dst_stride_argb = 0;
-@@ -4615,7 +4664,8 @@ int AR64Shuffle(const uint16_t* src_ar64,
+   }
+ #if defined(HAS_ARGBSHUFFLEROW_SSSE3)
+@@ -4613,11 +4662,12 @@ int AR64Shuffle(const uint16_t* src_ar64,
+     height = -height;
+     src_ar64 = src_ar64 + (height - 1) * src_stride_ar64;
      src_stride_ar64 = -src_stride_ar64;
    }
    // Coalesce rows.
@@ -538,7 +740,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_ar64 = dst_stride_ar64 = 0;
-@@ -5014,7 +5064,8 @@ int ARGBPolynomial(const uint8_t* src_argb,
+   }
+   // Assembly versions can be reused if it's implemented with shuffle.
+@@ -5012,11 +5062,12 @@ int ARGBPolynomial(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -548,7 +754,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb = 0;
-@@ -5064,7 +5115,8 @@ int HalfFloatPlane(const uint16_t* src_y,
+   }
+ #if defined(HAS_ARGBPOLYNOMIALROW_SSE2)
+@@ -5062,11 +5113,12 @@ int HalfFloatPlane(const uint16_t* src_y,
+     height = -height;
+     src_y = src_y + (height - 1) * src_stride_y;
      src_stride_y = -src_stride_y;
    }
    // Coalesce rows.
@@ -558,7 +768,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_y = 0;
-@@ -5176,7 +5228,8 @@ int ARGBLumaColorTable(const uint8_t* src_argb,
+   }
+ #if defined(HAS_HALFFLOATROW_SSE2)
+@@ -5174,11 +5226,12 @@ int ARGBLumaColorTable(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -568,7 +782,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb = 0;
-@@ -5216,7 +5269,8 @@ int ARGBCopyAlpha(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBLUMACOLORTABLEROW_SSSE3)
+@@ -5214,11 +5267,12 @@ int ARGBCopyAlpha(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -578,7 +796,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb = 0;
-@@ -5264,7 +5318,8 @@ int ARGBExtractAlpha(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBCOPYALPHAROW_SSE2)
+@@ -5262,11 +5316,12 @@ int ARGBExtractAlpha(const uint8_t* src_argb,
+     height = -height;
+     src_argb += (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -588,7 +810,11 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_a = 0;
-@@ -5330,7 +5385,8 @@ int ARGBCopyYToAlpha(const uint8_t* src_y,
+   }
+   void (*ARGBExtractAlphaRow)(const uint8_t* src_argb, uint8_t* dst_a,
+@@ -5328,11 +5383,12 @@ int ARGBCopyYToAlpha(const uint8_t* src_y,
+     height = -height;
+     src_y = src_y + (height - 1) * src_stride_y;
      src_stride_y = -src_stride_y;
    }
    // Coalesce rows.
@@ -598,3 +824,5 @@ diff a/source/planar_functions.cc b/source/planar_functions.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_argb = 0;
+   }
+ #if defined(HAS_ARGBCOPYYTOALPHAROW_SSE2)

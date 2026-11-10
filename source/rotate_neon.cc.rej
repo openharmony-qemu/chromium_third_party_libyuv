@@ -1,5 +1,7 @@
 diff a/source/rotate_neon.cc b/source/rotate_neon.cc	(rejected hunks)
-@@ -198,16 +198,16 @@ void Transpose4x4_32_NEON(const uint8_t* src,
+@@ -196,20 +196,20 @@ void Transpose4x4_32_NEON(const uint8_t* src,
+       "vst1.8      {q1}, [%5]!                   \n"
+       "vst1.8      {q2}, [%6]!                   \n"
        "vst1.8      {q3}, [%7]!                   \n"
        "bgt         1b                            \n"
  
@@ -25,4 +27,6 @@ diff a/source/rotate_neon.cc b/source/rotate_neon.cc	(rejected hunks)
 +      : "r"((ptrdiff_t)src_stride * 4)  // %9
        : "memory", "cc", "q0", "q1", "q2", "q3");
  }
+ 
+ #endif  // defined(__ARM_NEON__) && !defined(__aarch64__)
  

@@ -1,5 +1,7 @@
 diff a/source/row_neon64.cc b/source/row_neon64.cc	(rejected hunks)
-@@ -4984,10 +4984,10 @@ void ConvertFP16ToFP32Column_NEON(const uint16_t* src,  // fp16
+@@ -4982,14 +4982,14 @@ void ConvertFP16ToFP32Column_NEON(const uint16_t* src,  // fp16
+       "subs        %w2, %w2, #1                  \n"  // 1 floats per loop
+       "fcvtl       v2.4s, v1.4h                  \n"  // 1 floats
        "str         s2, [%1], #4                  \n"  // store 1 floats
        "b.gt        2b                            \n"
        "3:          \n"
@@ -14,3 +16,5 @@ diff a/source/row_neon64.cc b/source/row_neon64.cc	(rejected hunks)
        : "cc", "memory", "v0", "v1", "v2", "v3");
  }
  
+ // Convert FP32 Floats to FP16 Half Floats
+ void ConvertFP32ToFP16Row_NEON(const float* src,
