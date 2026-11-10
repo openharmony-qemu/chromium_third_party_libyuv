@@ -9,6 +9,7 @@
 import("//build/config/features.gni")
 import("//testing/test.gni")
 import("libyuv.gni")
+import("//arkweb/build/config/sanitizers/sanitizers.gni")
 
 declare_args() {
   # Set to false to disable building with absl flags.
