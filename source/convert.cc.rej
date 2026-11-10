@@ -1,5 +1,7 @@
 diff a/source/convert.cc b/source/convert.cc	(rejected hunks)
-@@ -10,6 +10,8 @@
+@@ -8,10 +8,12 @@
+  *  be found in the AUTHORS file in the root of the source tree.
+  */
  
  #include "libyuv/convert.h"
  
@@ -8,7 +10,11 @@ diff a/source/convert.cc b/source/convert.cc	(rejected hunks)
  #include "libyuv/basic_types.h"
  #include "libyuv/cpu_id.h"
  #include "libyuv/planar_functions.h"
-@@ -1440,7 +1442,8 @@ int NV12ToI420(const uint8_t* src_y,
+ #include "libyuv/rotate.h"
+ #include "libyuv/row.h"
+@@ -1438,11 +1440,12 @@ int NV12ToI420(const uint8_t* src_y,
+     src_uv = src_uv + (halfheight - 1) * src_stride_uv;
+     src_stride_y = -src_stride_y;
      src_stride_uv = -src_stride_uv;
    }
    // Coalesce rows.
@@ -18,7 +24,11 @@ diff a/source/convert.cc b/source/convert.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_y = dst_stride_y = 0;
-@@ -4445,7 +4448,8 @@ int RGB24ToJ400(const uint8_t* src_rgb24,
+   }
+   // Coalesce rows.
+@@ -4443,11 +4446,12 @@ int RGB24ToJ400(const uint8_t* src_rgb24,
+     height = -height;
+     src_rgb24 = src_rgb24 + (height - 1) * src_stride_rgb24;
      src_stride_rgb24 = -src_stride_rgb24;
    }
    // Coalesce rows.
@@ -28,7 +38,11 @@ diff a/source/convert.cc b/source/convert.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_rgb24 = dst_stride_yj = 0;
-@@ -4525,7 +4529,8 @@ int RAWToJ400(const uint8_t* src_raw,
+   }
+ #if defined(HAS_RGB24TOYJROW_SSSE3)
+@@ -4523,11 +4527,12 @@ int RAWToJ400(const uint8_t* src_raw,
+     height = -height;
+     src_raw = src_raw + (height - 1) * src_stride_raw;
      src_stride_raw = -src_stride_raw;
    }
    // Coalesce rows.
@@ -38,3 +52,5 @@ diff a/source/convert.cc b/source/convert.cc	(rejected hunks)
      width *= height;
      height = 1;
      src_stride_raw = dst_stride_yj = 0;
+   }
+ 

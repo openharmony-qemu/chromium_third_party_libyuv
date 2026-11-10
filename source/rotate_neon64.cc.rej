@@ -1,5 +1,7 @@
 diff a/source/rotate_neon64.cc b/source/rotate_neon64.cc	(rejected hunks)
-@@ -252,16 +252,16 @@ void Transpose4x4_32_NEON(const uint8_t* src,
+@@ -250,20 +250,20 @@ void Transpose4x4_32_NEON(const uint8_t* src,
+       "st1         {v0.4s}, [%4], 16             \n"
+       "st1         {v1.4s}, [%5], 16             \n"
        "st1         {v2.4s}, [%6], 16             \n"
        "st1         {v3.4s}, [%7], 16             \n"
        "b.gt        1b                            \n"
@@ -25,4 +27,6 @@ diff a/source/rotate_neon64.cc b/source/rotate_neon64.cc	(rejected hunks)
 +      : "r"((ptrdiff_t)src_stride * 4)  // %9
        : "memory", "cc", "v0", "v1", "v2", "v3");
  }
+ 
+ #endif  // !defined(LIBYUV_DISABLE_NEON) && defined(__aarch64__)
  

@@ -1,5 +1,7 @@
 diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks)
-@@ -10,6 +10,8 @@
+@@ -8,10 +8,12 @@
+  *  be found in the AUTHORS file in the root of the source tree.
+  */
  
  #include "libyuv/convert_from_argb.h"
  
@@ -8,7 +10,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
  #include "libyuv/basic_types.h"
  #include "libyuv/cpu_id.h"
  #include "libyuv/planar_functions.h"
-@@ -1696,7 +1698,8 @@ int ARGBToRGBA(const uint8_t* src_argb,
+ #include "libyuv/row.h"
+ 
+@@ -1694,11 +1696,12 @@ int ARGBToRGBA(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -18,7 +24,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_rgba = 0;
-@@ -1737,7 +1740,8 @@ int ARGBToRGB24(const uint8_t* src_argb,
+   }
+ 
+@@ -1735,11 +1738,12 @@ int ARGBToRGB24(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -28,7 +38,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_rgb24 = 0;
-@@ -1829,7 +1833,8 @@ int ARGBToRAW(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBTORGB24ROW_SSSE3)
+@@ -1827,11 +1831,12 @@ int ARGBToRAW(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -38,7 +52,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_raw = 0;
-@@ -1999,7 +2004,8 @@ int ARGBToRGB565(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBTORAWROW_SSSE3)
+@@ -1997,11 +2002,12 @@ int ARGBToRGB565(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -48,7 +66,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_rgb565 = 0;
-@@ -2079,7 +2085,8 @@ int ARGBToARGB1555(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBTORGB565ROW_SSE2)
+@@ -2077,11 +2083,12 @@ int ARGBToARGB1555(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -58,7 +80,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb1555 = 0;
-@@ -2153,7 +2160,8 @@ int ARGBToARGB4444(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBTOARGB1555ROW_SSE2)
+@@ -2151,11 +2158,12 @@ int ARGBToARGB4444(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -68,7 +94,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_argb4444 = 0;
-@@ -2227,7 +2235,8 @@ int ABGRToAR30(const uint8_t* src_abgr,
+   }
+ #if defined(HAS_ARGBTOARGB4444ROW_SSE2)
+@@ -2225,11 +2233,12 @@ int ABGRToAR30(const uint8_t* src_abgr,
+     height = -height;
+     src_abgr = src_abgr + (height - 1) * src_stride_abgr;
      src_stride_abgr = -src_stride_abgr;
    }
    // Coalesce rows.
@@ -78,7 +108,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_abgr = dst_stride_ar30 = 0;
-@@ -2284,7 +2293,8 @@ int ARGBToAR30(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ABGRTOAR30ROW_NEON)
+@@ -2282,11 +2291,12 @@ int ARGBToAR30(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -88,7 +122,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_ar30 = 0;
-@@ -2857,7 +2867,8 @@ int RGBAToJ400(const uint8_t* src_rgba,
+   }
+ #if defined(HAS_ARGBTOAR30ROW_NEON)
+@@ -2855,11 +2865,12 @@ int RGBAToJ400(const uint8_t* src_rgba,
+     height = -height;
+     src_rgba = src_rgba + (height - 1) * src_stride_rgba;
      src_stride_rgba = -src_stride_rgba;
    }
    // Coalesce rows.
@@ -98,7 +136,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_rgba = dst_stride_yj = 0;
-@@ -3324,7 +3335,8 @@ int ARGBToAR64(const uint8_t* src_argb,
+   }
+ #if defined(HAS_RGBATOYJROW_SSSE3)
+@@ -3322,11 +3333,12 @@ int ARGBToAR64(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -108,7 +150,11 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_ar64 = 0;
-@@ -3388,7 +3400,8 @@ int ARGBToAB64(const uint8_t* src_argb,
+   }
+ #if defined(HAS_ARGBTOAR64ROW_SSSE3)
+@@ -3386,11 +3398,12 @@ int ARGBToAB64(const uint8_t* src_argb,
+     height = -height;
+     src_argb = src_argb + (height - 1) * src_stride_argb;
      src_stride_argb = -src_stride_argb;
    }
    // Coalesce rows.
@@ -118,3 +164,5 @@ diff a/source/convert_from_argb.cc b/source/convert_from_argb.cc	(rejected hunks
      width *= height;
      height = 1;
      src_stride_argb = dst_stride_ab64 = 0;
+   }
+ #if defined(HAS_ARGBTOAB64ROW_SSSE3)
